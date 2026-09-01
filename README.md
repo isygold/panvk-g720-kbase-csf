@@ -13,13 +13,17 @@ O caminho principal atual é nativo: PanVK fala diretamente com Kbase/CSF. Wrapp
 
 - **`main`**: landing/documentação pública.
 - **`ci`**: checkpoint histórico full-Mesa `0521a3257628e811cfead6b5a9753e9f705e2f31`; preservado.
-- **`android-candidate-beta-1.9.4`**: linha de source Android candidata derivada de `ci`.
+- **`android-candidate-beta-1.9.4`**: fonte congelada da release pública `0.1.0-beta.1.9.4`, derivada de `ci`.
 
-Candidato comunitário selecionado: **`0.1.0-beta.1.9.4`**. A distribuição permanece **HOLD**: a composição nativa FullPlane + Kbase O_RDONLY foi qualificada, mas o último Gate A Winlator/Vortek chegou ao primeiro `vkQueueSubmit` e terminou antes de acquire/present. O `_wassert` observado prova um `VkResult` não-zero no ponto assertado, mas **não prova sozinho um GPU fatal**.
+Release pública atual: **`0.1.0-beta.1.9.4`**, publicada como **GitHub Pre-release / Public Beta** para testes da comunidade. O artefato oficial é `PanVK-G720-0.1.0-beta.1.9.4.zip` (SHA-256 `01c6304206c6e348cb069e3d04fb1c7b693195b543b4134ad7c108a33906d1fa`). A release aponta para o source commit `3549264275c9663ed73e01d652f4c0d16f21df22`; a branch `ci` histórica permanece preservada.
+
+A composição nativa FullPlane + Kbase O_RDONLY foi qualificada. No caminho Winlator/Vortek registrado antes da publicação, o Gate A chegou ao primeiro `vkQueueSubmit` e terminou antes de acquire/present; o `_wassert` observado prova um `VkResult` não-zero no ponto assertado, mas **não prova sozinho um GPU fatal**.
 
 No MC8 autoritativo, `tessellationShader=true` foi validado no escopo dirigido e em CTS focado. Isso **não é** uma alegação de conformidade Vulkan.
 
-Documentação: [status](docs/STATUS.md) · [proveniência](docs/PROVENANCE.md) · [validação](docs/VALIDATION.md) · [versionamento](docs/VERSIONING.md)
+**[⬇️ Release 0.1.0-beta.1.9.4](https://github.com/wonderkast02/panvk-g720-kbase-csf/releases/tag/0.1.0-beta.1.9.4)**
+
+Documentação: [status](docs/STATUS.md) · [releases](docs/RELEASES.md) · [proveniência](docs/PROVENANCE.md) · [validação](docs/VALIDATION.md) · [versionamento](docs/VERSIONING.md)
 
 > Nunca converter `DRM_FORMAT_MOD_INVALID` em `DRM_FORMAT_MOD_LINEAR` por suposição.
 

@@ -26,3 +26,15 @@ Kbase semantics are deliberately narrow: the dma-heap **device node** is opened 
 The Beta2 WSI/dma-buf-decoupling and Beta3 explicit-exportable-routing experiments are excluded. `DRM_FORMAT_MOD_INVALID -> DRM_FORMAT_MOD_LINEAR` guessing is forbidden.
 
 This branch preserves the tracked Mesa source lineage used by the established Android/Bionic build staging. Reproducing the final binary also requires the documented external build environment (NDK/API35, Meson configuration and local dependencies); the Git branch alone is not claimed to be a hermetic build image.
+
+## Published release binding
+
+Public beta `0.1.0-beta.1.9.4` is bound to source commit `3549264275c9663ed73e01d652f4c0d16f21df22` on `android-candidate-beta-1.9.4`.
+
+- package SHA-256: `01c6304206c6e348cb069e3d04fb1c7b693195b543b4134ad7c108a33906d1fa`
+- embedded SO SHA-256: `05f867332924aacd91e6182cc1cc572ff04689cbcebeeba0e70bef61698dc9de`
+- `meta.json` SHA-256: `01ef6b466751a5cb375073319ed70f872763ab71858b767c24d4ae9e737dae90`
+- GNU Build ID: `4bc1dcd6ade70537a80e64bfc4976cb5936bf2af`
+- tag: `refs/tags/0.1.0-beta.1.9.4`
+
+The tag binds the release to the qualified source lineage; release publication does not alter the historical `ci` checkpoint.

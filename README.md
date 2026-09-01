@@ -23,6 +23,8 @@ No MC8 autoritativo, `tessellationShader=true` foi validado no escopo dirigido e
 
 **[⬇️ Release 0.1.0-beta.1.9.4](https://github.com/wonderkast02/panvk-g720-kbase-csf/releases/tag/0.1.0-beta.1.9.4)**
 
+**Community:** [🧪 testing guide](docs/COMMUNITY_TESTING.md) · [🤝 contributing](CONTRIBUTING.md) · [🔐 security](SECURITY.md)
+
 Documentação: [status](docs/STATUS.md) · [releases](docs/RELEASES.md) · [proveniência](docs/PROVENANCE.md) · [validação](docs/VALIDATION.md) · [versionamento](docs/VERSIONING.md)
 
 > Nunca converter `DRM_FORMAT_MOD_INVALID` em `DRM_FORMAT_MOD_LINEAR` por suposição.

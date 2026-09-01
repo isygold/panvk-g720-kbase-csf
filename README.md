@@ -8,6 +8,23 @@ O caminho principal atual é nativo: PanVK fala diretamente com Kbase/CSF. Wrapp
 
 ---
 
+
+## 🚦 Estado atual — 2026-09-01
+
+- **`main`**: landing/documentação pública.
+- **`ci`**: checkpoint histórico full-Mesa `0521a3257628e811cfead6b5a9753e9f705e2f31`; preservado.
+- **`android-candidate-beta-1.9.4`**: linha de source Android candidata derivada de `ci`.
+
+Candidato comunitário selecionado: **`0.1.0-beta.1.9.4`**. A distribuição permanece **HOLD**: a composição nativa FullPlane + Kbase O_RDONLY foi qualificada, mas o último Gate A Winlator/Vortek chegou ao primeiro `vkQueueSubmit` e terminou antes de acquire/present. O `_wassert` observado prova um `VkResult` não-zero no ponto assertado, mas **não prova sozinho um GPU fatal**.
+
+No MC8 autoritativo, `tessellationShader=true` foi validado no escopo dirigido e em CTS focado. Isso **não é** uma alegação de conformidade Vulkan.
+
+Documentação: [status](docs/STATUS.md) · [proveniência](docs/PROVENANCE.md) · [validação](docs/VALIDATION.md) · [versionamento](docs/VERSIONING.md)
+
+> Nunca converter `DRM_FORMAT_MOD_INVALID` em `DRM_FORMAT_MOD_LINEAR` por suposição.
+
+---
+
 ## ✅ Hardware / Kernel (validação)
 
 Hardware validado:
@@ -302,91 +319,28 @@ As provas de conceito abaixo registram etapas diferentes do desenvolvimento. Ela
    - triangles / quads / isolines
    - equal spacing e caminhos fractional-even/fractional-odd validados
    - checkpoint de código: `0521a3257628`
-   - `tessellationShader` continua desativado até fechar integração/CTS
+   - `tessellationShader=true` foi posteriormente validado na linha MC8 autoritativa; ver `docs/VALIDATION.md`
 
 ---
 
-## 🧬 Tessellation — checkpoint validado em hardware
+## 🧬 Tessellation — estado MC8 validado
 
-O caminho **direct** de tessellation PanVK/libpoly já executou end-to-end na
-Mali-G720 real:
+A linha MC8 autoritativa expõe `tessellationShader=true` e validou o caminho PanVK/libpoly em hardware real. Entre os oracles acumulados estão Direct/P7/Replay 9/9, common-edge TRI 6/6, common-edge QUAD 6/6, winding 48/48, sync64 64/64, DYN256 19/19, stress até 8192 triangle patches e duas repetições da fatia CTS com 160 PASS / 954 NOT_SUPPORTED / 0 FAIL / 0 OTHER.
 
-`SW VS → TCS → COUNT → PREFIX → WITH_COUNTS → indexed indirect → TES/IDVS → rasterização`
-
-Checkpoint `ci`: `0521a3257628`.
-
-### ✅ O que foi validado
-
-- ✅ guard de invocações SW-VS excedentes mantendo WG64;
-- ✅ TCS físico executando como compute;
-- ✅ libpoly COUNT;
-- ✅ prefix sum;
-- ✅ libpoly WITH_COUNTS;
-- ✅ contrato heap/index buffer + `firstIndex`;
-- ✅ TES/IDVS e rasterização final;
-- ✅ framebuffer 64×64: **4096/4096 pixels** contra referência CPU;
-- ✅ point mode assimétrico: **12/12** coordenadas;
-- ✅ varying genérico TES → FS transportando `gl_TessCoord`: **12/12**;
-- ✅ triangle `fractional_even_spacing`: **19/19** pontos no caso de paridade;
-- ✅ triangle `fractional_odd_spacing`: **29/29** pontos no caso de paridade;
-- ✅ quads: **21/21** pontos;
-- ✅ isolines: **28/28** pontos;
-- ✅ correção TES point-mode com
-  `nir_recompute_io_bases(nir, nir_var_shader_out)`.
-
-Não houve missing, extra ou color mismatch nos oracles finais de quads e
-isolines.
-
-### ⚠️ Feature ainda não anunciada
-
-`tessellationShader` permanece **false** no checkpoint publicado.
-
-Os testes de caminho completo ativaram a feature apenas temporariamente para
-validação dirigida. Isso não é uma declaração de conformidade Vulkan.
-
-Ainda faltam, antes de anunciar suporte:
-
-- tessellation indirect iniciado pela aplicação;
-- múltiplos draws sequenciais e auditoria completa de dirty state;
-- query/XFB e interações de estado adjacentes;
-- segurança/lifetime para simultaneous-use;
-- winding, patch discard, limits e invariance;
-- propriedades de fractional spacing com níveis não inteiros;
-- regressões focadas e cobertura CTS mais ampla;
-- limpeza final dos diagnósticos de desenvolvimento.
-
-Também não será forçado `vertexPipelineStoresAndAtomics` apenas para facilitar
-testes.
+Esses resultados são específicos do escopo e hardware testados. Eles não declaram conformidade Vulkan nem suporte universal a todo Mali-G720.
 
 ---
 
 ## 🛠️ Próximos passos (priorizados)
 
-1. Auditar/implementar o caminho de tessellation indirect da aplicação. (🚧)
-2. Validar vários draws sequenciais e o dirty-state do PanVK. (🚧)
-3. Validar winding, patch discard, limits e invariance. (🚧)
-4. Cobrir fractional spacing não inteiro por propriedades permitidas pela
-   especificação, sem exigir coordenadas implementation-defined. (🚧)
-5. Auditar query/XFB e simultaneous-use. (🚧)
-6. Rodar regressões e uma fatia maior do Vulkan CTS. (🧪)
-7. Remover diagnostics temporários restantes. (🧪)
-8. Só então considerar `tessellationShader=true`. (🚧)
-9. Depois, auditar vazamentos panthor/DRM/UAPI fora da camada kmod. (🧪)
-10. Continuar `geometryShader` e `multiViewport` em etapas separadas. (🧪)
-11. Manter `textureCompressionBC` desativado sem implementação real. (🚧)
-12. Revalidar DXVK/VKD3D sobre uma base PanVK estável. (🧪)
+1. Fechar causalmente o retorno do primeiro submit/fence no caminho Winlator/Vortek do `0.1.0-beta.1.9.4`.
+2. Só depois repetir Gate A; Gate B, soak e DXVK/D3D11 dependem desse fechamento.
+3. Ampliar regressões/CTS e validação em outros G720 sem transformar MC8 em claim universal.
+4. Continuar `geometryShader` e `multiViewport` em etapas independentes.
+5. Manter `textureCompressionBC` desativado sem implementação real.
+6. Preservar hashes/proveniência e a separação entre `main`, `ci` e `android-candidate-beta-1.9.4`.
 
-Política do fork:
-- manter PanVK/libpoly genéricos próximos do upstream;
-- manter detalhes kbase/CSF na camada baixa apropriada;
-- preferir implementações upstream existentes a duplicações locais;
-- não anunciar features antes de implementação e validação.
-
-Status:
-- ✅ integrado / validado no nível indicado
-- 🧪 experimental / investigação
-- 🚧 em desenvolvimento
-- ❌ não suportado / não implementado
+A linha candidata não inclui os deltas experimentais Beta2/Beta3.
 
 ---
 
